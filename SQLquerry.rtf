@@ -1,0 +1,661 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;\f2\fnil\fcharset0 Menlo-Regular;
+\f3\fmodern\fcharset0 Courier-Oblique;}
+{\colortbl;\red255\green255\blue255;\red174\green176\blue183;\red23\green23\blue26;\red195\green123\blue90;
+\red185\green101\blue173;\red38\green157\blue169;\red89\green158\blue96;\red254\green187\blue91;\red72\green151\blue245;
+\red103\green107\blue114;\red133\green96\blue154;\red31\green46\blue49;}
+{\*\expandedcolortbl;;\csgenericrgb\c68235\c69020\c71765;\csgenericrgb\c9020\c9020\c10196;\csgenericrgb\c76471\c48235\c35294;
+\csgenericrgb\c72549\c39608\c67843;\csgenericrgb\c14902\c61569\c66275;\csgenericrgb\c34902\c61961\c37647;\csgenericrgb\c99608\c73333\c35686;\csgenericrgb\c28235\c59216\c96078;
+\csgenericrgb\c40392\c41961\c44706;\csgenericrgb\c52157\c37647\c60392;\csgenericrgb\c12157\c18039\c19216;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww9680\viewh6580\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs26 \cf2 \cb3 \
+
+\f1 \cf4 CREATE TABLE \cf2 Room (\
+    \cf5 room_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 room_type \cf4 VARCHAR\cf2 (\cf6 50\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 price \cf4 DECIMAL\cf2 (\cf6 10\cf2 , \cf6 2\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 is_available \cf4 BOOLEAN NOT NULL\cf2 ,\
+    \cf4 CONSTRAINT \cf2 check_price_positive \cf4 CHECK \cf2 (\cf5 price \cf2 >= \cf6 0\cf2 ),\
+    \cf4 CONSTRAINT \cf2 check_is_available \cf4 CHECK \cf2 (\cf5 is_available \cf4 IN \cf2 (\cf4 true\cf2 , \cf4 false\cf2 ))\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_room_type \cf4 ON \cf2 Room (\cf5 room_type\cf2 );\
+\
+\
+\cf4 CREATE UNIQUE INDEX \cf2 idx_room_id \cf4 ON \cf2 Room (\cf5 room_id\cf2 );\
+\
+\
+\cf4 CLUSTER \cf2 Room \cf4 USING \cf2 idx_room_type;\
+\
+\
+\cf4 INSERT INTO \cf2 Room (\cf5 room_type\cf2 , \cf5 price\cf2 , \cf5 is_available\cf2 ) \cf4 VALUES\
+    \cf2 (\cf7 '
+\f2 \uc0\u1054 \u1076 \u1085 \u1086 \u1084 \u1077 \u1089 \u1090 \u1085 \u1099 \u1081 
+\f1 '\cf2 , \cf6 100.00\cf2 , \cf4 true\cf2 ),\
+    (\cf7 '
+\f2 \uc0\u1044 \u1074 \u1091 \u1093 \u1084 \u1077 \u1089 \u1090 \u1085 \u1099 \u1081 
+\f1 '\cf2 , \cf6 150.00\cf2 , \cf4 true\cf2 ),\
+    (\cf7 '
+\f2 \uc0\u1051 \u1102 \u1082 \u1089 
+\f1 '\cf2 , \cf6 250.00\cf2 , \cf4 false\cf2 );\
+\
+\cf4 SELECT \cf8 * \cf4 FROM \cf2 Room;\
+\
+\cf4 CREATE TABLE \cf2 Hotel (\
+    \cf5 hotel_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 name \cf4 VARCHAR\cf2 (\cf6 100\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 address \cf4 TEXT NOT NULL\cf2 ,\
+    \cf5 room_count \cf4 INT NOT NULL\cf2 ,\
+    \cf5 star_rating \cf4 INT NOT NULL\cf2 ,\
+    \cf4 CONSTRAINT \cf2 check_star_rating \cf4 CHECK \cf2 (\cf5 star_rating \cf2 >= \cf6 1 \cf4 AND \cf5 star_rating \cf2 <= \cf6 5\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_hotel_name \cf4 ON \cf2 Hotel (\cf5 name\cf2 );\
+\
+\cf4 CREATE INDEX \cf2 idx_room_count \cf4 ON \cf2 Hotel (\cf5 room_count\cf2 );\
+\
+\
+\cf4 CREATE UNIQUE INDEX \cf2 idx_hotel_address \cf4 ON \cf2 Hotel (\cf5 address\cf2 );\
+\
+\
+\cf4 CLUSTER \cf2 Hotel \cf4 USING \cf2 idx_room_count;\
+\
+\
+\cf4 INSERT INTO \cf2 Hotel (\cf5 name\cf2 , \cf5 address\cf2 , \cf5 room_count\cf2 , \cf5 star_rating\cf2 ) \cf4 VALUES\
+    \cf2 (\cf7 '
+\f2 \uc0\u1054 \u1090 \u1077 \u1083 \u1100 
+\f1  
+\f2 \uc0\u1040 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1040 \u1076 \u1088 \u1077 \u1089 
+\f1  1'\cf2 , \cf6 100\cf2 , \cf6 4\cf2 ),\
+    (\cf7 '
+\f2 \uc0\u1054 \u1090 \u1077 \u1083 \u1100 
+\f1  B'\cf2 , \cf7 '
+\f2 \uc0\u1040 \u1076 \u1088 \u1077 \u1089 
+\f1  2'\cf2 , \cf6 150\cf2 , \cf6 3\cf2 ),\
+    (\cf7 '
+\f2 \uc0\u1054 \u1090 \u1077 \u1083 \u1100 
+\f1  C'\cf2 , \cf7 '
+\f2 \uc0\u1040 \u1076 \u1088 \u1077 \u1089 
+\f1  3'\cf2 , \cf6 200\cf2 , \cf6 5\cf2 );\
+\
+\cf4 SELECT \cf8 * \cf4 FROM \cf2 Hotel;\
+\
+\
+\cf4 CREATE TABLE \cf2 Guest (\
+    \cf5 guest_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 first_name \cf4 VARCHAR\cf2 (\cf6 50\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 last_name \cf4 VARCHAR\cf2 (\cf6 50\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 contact_info \cf4 TEXT\cf2 ,\
+    \cf5 passport_info \cf4 TEXT\cf2 ,\
+    \cf4 CONSTRAINT \cf2 unique_guest_name \cf4 UNIQUE \cf2 (\cf5 first_name\cf2 , \cf5 last_name\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_guest_passport_info \cf4 ON \cf2 Guest (\cf5 passport_info\cf2 );\
+\
+\
+\
+\
+\cf4 INSERT INTO \cf2 Guest (\cf5 first_name\cf2 , \cf5 last_name\cf2 , \cf5 contact_info\cf2 , \cf5 passport_info\cf2 ) \cf4 VALUES\
+    \cf2 (\cf7 '
+\f2 \uc0\u1048 \u1074 \u1072 \u1085 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1048 \u1074 \u1072 \u1085 \u1086 \u1074 
+\f1 '\cf2 , \cf7 'ivan@example.com'\cf2 , \cf7 '12345'\cf2 ),\
+    (\cf7 '
+\f2 \uc0\u1055 \u1077 \u1090 \u1088 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1055 \u1077 \u1090 \u1088 \u1086 \u1074 
+\f1 '\cf2 , \cf7 'petr@example.com'\cf2 , \cf7 '67890'\cf2 ),\
+    (\cf7 '
+\f2 \uc0\u1052 \u1072 \u1088 \u1080 \u1103 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1057 \u1080 \u1076 \u1086 \u1088 \u1086 \u1074 \u1072 
+\f1 '\cf2 , \cf7 'maria@example.com'\cf2 , \cf7 '54321'\cf2 );\
+\
+\
+\cf4 CREATE TABLE \cf2 Reservation (\
+    \cf5 reservation_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 guest_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 room_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 check_in_date \cf4 DATE NOT NULL\cf2 ,\
+    \cf5 check_out_date \cf4 DATE NOT NULL\cf2 ,\
+    \cf5 status \cf4 VARCHAR\cf2 (\cf6 20\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf4 CONSTRAINT \cf2 check_date_order \cf4 CHECK \cf2 (\cf5 check_in_date \cf2 <= \cf5 check_out_date\cf2 ),\
+    \cf4 CONSTRAINT \cf2 valid_reservation_status \cf4 CHECK \cf2 (\cf5 status \cf4 IN \cf2 (\cf7 '
+\f2 \uc0\u1047 \u1072 \u1073 \u1088 \u1086 \u1085 \u1080 \u1088 \u1086 \u1074 \u1072 \u1085 \u1086 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1047 \u1072 \u1089 \u1077 \u1083 \u1077 \u1085 \u1086 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1042 \u1099 \u1089 \u1077 \u1083 \u1077 \u1085 \u1086 
+\f1 '\cf2 )),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 guest_id\cf2 ) \cf4 REFERENCES \cf2 Guest (\cf5 guest_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 room_id\cf2 ) \cf4 REFERENCES \cf2 Room (\cf5 room_id\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_reservation_status \cf4 ON \cf2 Reservation (\cf5 status\cf2 );\
+\cf4 CREATE INDEX \cf2 idx_check_in_date \cf4 ON \cf2 Reservation (\cf5 check_in_date\cf2 );\
+\
+\
+\cf4 CLUSTER \cf2 Reservation \cf4 USING \cf2 idx_check_in_date;\
+\
+\
+\cf4 INSERT INTO \cf2 Reservation (\cf5 guest_id\cf2 , \cf5 room_id\cf2 , \cf5 check_in_date\cf2 , \cf5 check_out_date\cf2 , \cf5 status\cf2 ) \cf4 VALUES\
+    \cf2 (\cf6 1\cf2 , \cf6 1\cf2 , \cf7 '2023-11-01'\cf2 , \cf7 '2023-11-05'\cf2 , \cf7 '
+\f2 \uc0\u1047 \u1072 \u1073 \u1088 \u1086 \u1085 \u1080 \u1088 \u1086 \u1074 \u1072 \u1085 \u1086 
+\f1 '\cf2 ),\
+    (\cf6 2\cf2 , \cf6 2\cf2 , \cf7 '2023-12-10'\cf2 , \cf7 '2023-12-15'\cf2 , \cf7 '
+\f2 \uc0\u1047 \u1072 \u1089 \u1077 \u1083 \u1077 \u1085 \u1086 
+\f1 '\cf2 ),\
+    (\cf6 3\cf2 , \cf6 3\cf2 , \cf7 '2024-01-20'\cf2 , \cf7 '2024-01-25'\cf2 , \cf7 '
+\f2 \uc0\u1042 \u1099 \u1089 \u1077 \u1083 \u1077 \u1085 \u1086 
+\f1 '\cf2 );\
+\
+\cf4 select \cf8 * \cf4 from \cf2 Guest;\
+\cf4 select \cf8 * \cf4 from \cf2 Reservation;\
+\
+\
+\cf4 CREATE TABLE \cf2 Staff (\
+    \cf5 staff_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 first_name \cf4 VARCHAR\cf2 (\cf6 50\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 last_name \cf4 VARCHAR\cf2 (\cf6 50\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 position \cf4 VARCHAR\cf2 (\cf6 100\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 contact_info \cf4 TEXT\cf2 ,\
+    \cf5 department_id \cf4 INT\cf2 ,\
+    \cf4 CONSTRAINT \cf2 valid_department_id \cf4 CHECK \cf2 (\cf5 department_id \cf4 IS NULL OR \cf5 department_id \cf2 > \cf6 0\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_staff_position \cf4 ON \cf2 Staff (\cf5 position\cf2 );\
+\cf4 CREATE INDEX \cf2 idx_staff_id \cf4 ON \cf2 Staff (\cf5 staff_id\cf2 );\
+\
+\
+\cf4 CLUSTER \cf2 Staff \cf4 USING \cf2 idx_staff_id;\
+\
+\
+\cf4 INSERT INTO \cf2 Staff (\cf5 first_name\cf2 , \cf5 last_name\cf2 , \cf5 position\cf2 , \cf5 contact_info\cf2 , \cf5 department_id\cf2 ) \cf4 VALUES\
+    \cf2 (\cf7 '
+\f2 \uc0\u1048 \u1074 \u1072 \u1085 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1048 \u1074 \u1072 \u1085 \u1086 \u1074 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1040 \u1076 \u1084 \u1080 \u1085 \u1080 \u1089 \u1090 \u1088 \u1072 \u1090 \u1086 \u1088 
+\f1 '\cf2 , \cf7 'ivan@example.com'\cf2 , \cf6 1\cf2 ),\
+    (\cf7 '
+\f2 \uc0\u1040 \u1085 \u1085 \u1072 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1055 \u1077 \u1090 \u1088 \u1086 \u1074 \u1072 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1059 \u1073 \u1086 \u1088 \u1097 \u1080 \u1094 \u1072 
+\f1 '\cf2 , \cf7 'anna@example.com'\cf2 , \cf6 2\cf2 ),\
+    (\cf7 '
+\f2 \uc0\u1052 \u1072 \u1082 \u1089 \u1080 \u1084 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1057 \u1080 \u1076 \u1086 \u1088 \u1086 \u1074 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1055 \u1086 \u1074 \u1072 \u1088 
+\f1 '\cf2 , \cf7 'max@example.com'\cf2 , \cf6 3\cf2 );\
+\
+\
+\cf4 CREATE TABLE \cf2 Department (\
+    \cf5 department_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 name \cf4 VARCHAR\cf2 (\cf6 100\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 description \cf4 TEXT\cf2 ,\
+    \cf4 CONSTRAINT \cf2 unique_department_name \cf4 UNIQUE \cf2 (\cf5 name\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_department_name \cf4 ON \cf2 Department (\cf5 name\cf2 );\
+\
+\
+\cf4 INSERT INTO \cf2 Department (\cf5 name\cf2 , \cf5 description\cf2 ) \cf4 VALUES\
+    \cf2 (\cf7 '
+\f2 \uc0\u1056 \u1077 \u1089 \u1077 \u1087 \u1096 \u1085 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1054 \u1090 \u1076 \u1077 \u1083 
+\f1  
+\f2 \uc0\u1088 \u1077 \u1075 \u1080 \u1089 \u1090 \u1088 \u1072 \u1094 \u1080 \u1080 
+\f1  
+\f2 \uc0\u1080 
+\f1  
+\f2 \uc0\u1086 \u1073 \u1089 \u1083 \u1091 \u1078 \u1080 \u1074 \u1072 \u1085 \u1080 \u1103 
+\f1  
+\f2 \uc0\u1075 \u1086 \u1089 \u1090 \u1077 \u1081 
+\f1 '\cf2 ),\
+    (\cf7 '
+\f2 \uc0\u1059 \u1073 \u1086 \u1088 \u1082 \u1072 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1054 \u1090 \u1076 \u1077 \u1083 
+\f1  
+\f2 \uc0\u1091 \u1073 \u1086 \u1088 \u1082 \u1080 
+\f1  
+\f2 \uc0\u1085 \u1086 \u1084 \u1077 \u1088 \u1086 \u1074 
+\f1  
+\f2 \uc0\u1080 
+\f1  
+\f2 \uc0\u1086 \u1073 \u1097 \u1080 \u1093 
+\f1  
+\f2 \uc0\u1087 \u1086 \u1084 \u1077 \u1097 \u1077 \u1085 \u1080 \u1081 
+\f1 '\cf2 ),\
+    (\cf7 '
+\f2 \uc0\u1056 \u1077 \u1089 \u1090 \u1086 \u1088 \u1072 \u1085 
+\f1 '\cf2 , \cf7 '
+\f2 \uc0\u1054 \u1090 \u1076 \u1077 \u1083 
+\f1  
+\f2 \uc0\u1088 \u1077 \u1089 \u1090 \u1086 \u1088 \u1072 \u1085 \u1085 \u1086 \u1075 \u1086 
+\f1  
+\f2 \uc0\u1086 \u1073 \u1089 \u1083 \u1091 \u1078 \u1080 \u1074 \u1072 \u1085 \u1080 \u1103 
+\f1 '\cf2 );\
+\
+\
+\cf4 CREATE TABLE \cf2 Service (\
+    \cf5 service_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 name \cf4 VARCHAR\cf2 (\cf6 100\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 description \cf4 TEXT\cf2 ,\
+    \cf5 price \cf4 DECIMAL\cf2 (\cf6 10\cf2 , \cf6 2\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf4 CONSTRAINT \cf2 unique_service_name \cf4 UNIQUE \cf2 (\cf5 name\cf2 ),\
+    \cf4 CONSTRAINT \cf2 check_price_positive \cf4 CHECK \cf2 (\cf5 price \cf2 >= \cf6 0\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_service_name \cf4 ON \cf2 Service (\cf5 name\cf2 );\
+\
+\
+\cf4 CLUSTER \cf2 Service \cf4 USING \cf2 idx_service_name;\
+\
+\
+\cf4 INSERT INTO \cf2 Service (\cf5 name\cf2 , \cf5 description\cf2 , \cf5 price\cf2 ) \cf4 VALUES\
+    \cf2 (\cf7 'Wi-Fi'\cf2 , \cf7 'High-speed internet access'\cf2 , \cf6 5.00\cf2 ),\
+    (\cf7 'Swimming Pool'\cf2 , \cf7 'Access to the hotel pool'\cf2 , \cf6 10.00\cf2 ),\
+    (\cf7 'Restaurant'\cf2 , \cf7 'Dining in the hotel restaurant'\cf2 , \cf6 20.00\cf2 );\
+\
+\
+\cf4 CREATE TABLE \cf2 ServiceOrders (\
+    \cf5 order_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 guest_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 service_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 order_date \cf4 DATE NOT NULL\cf2 ,\
+    \cf5 status \cf4 VARCHAR\cf2 (\cf6 20\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf4 CONSTRAINT \cf2 check_date_order \cf4 CHECK \cf2 (\cf5 order_date \cf2 <= 
+\f3\i \cf9 CURRENT_DATE
+\f1\i0 \cf2 ),\
+    \cf4 CONSTRAINT \cf2 valid_order_status \cf4 CHECK \cf2 (\cf5 status \cf4 IN \cf2 (\cf7 'Ordered'\cf2 , \cf7 'Delivered'\cf2 , \cf7 'Cancelled'\cf2 )),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 guest_id\cf2 ) \cf4 REFERENCES \cf2 Guest (\cf5 guest_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 service_id\cf2 ) \cf4 REFERENCES \cf2 Service (\cf5 service_id\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_order_status \cf4 ON \cf2 ServiceOrders (\cf5 status\cf2 );\
+\
+\
+\cf4 CLUSTER \cf2 ServiceOrders \cf4 USING \cf2 idx_order_status;\
+\
+\
+\cf4 INSERT INTO \cf2 ServiceOrders (\cf5 guest_id\cf2 , \cf5 service_id\cf2 , \cf5 order_date\cf2 , \cf5 status\cf2 ) \cf4 VALUES\
+    \cf2 (\cf6 1\cf2 , \cf6 1\cf2 , \cf7 '2023-10-27'\cf2 , \cf7 'Ordered'\cf2 ),\
+    (\cf6 2\cf2 , \cf6 2\cf2 , \cf7 '2023-10-27'\cf2 , \cf7 'Delivered'\cf2 ),\
+    (\cf6 3\cf2 , \cf6 3\cf2 , \cf7 '2023-10-27'\cf2 , \cf7 'Cancelled'\cf2 );\
+\
+\
+\
+\cf4 SELECT \cf8 * \cf4 FROM \cf2 Service;\
+\cf4 SELECT \cf8 * \cf4 FROM \cf2 ServiceOrders;\
+\
+\
+\cf4 CREATE TABLE \cf2 Review (\
+    \cf5 review_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 guest_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 hotel_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 rating \cf4 INT NOT NULL\cf2 ,\
+    \cf5 comment \cf4 TEXT\cf2 ,\
+    \cf5 review_date \cf4 DATE NOT NULL\cf2 ,\
+    \cf4 CONSTRAINT \cf2 valid_rating \cf4 CHECK \cf2 (\cf5 rating \cf2 >= \cf6 1 \cf4 AND \cf5 rating \cf2 <= \cf6 5\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 guest_id\cf2 ) \cf4 REFERENCES \cf2 Guest (\cf5 guest_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 hotel_id\cf2 ) \cf4 REFERENCES \cf2 Hotel (\cf5 hotel_id\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_review_date \cf4 ON \cf2 Review (\cf5 review_date\cf2 );\
+\
+\
+\cf4 CLUSTER \cf2 Review \cf4 USING \cf2 idx_review_date;\
+\
+\
+\cf4 INSERT INTO \cf2 Review (\cf5 guest_id\cf2 , \cf5 hotel_id\cf2 , \cf5 rating\cf2 , \cf5 comment\cf2 , \cf5 review_date\cf2 ) \cf4 VALUES\
+    \cf2 (\cf6 1\cf2 , \cf6 1\cf2 , \cf6 5\cf2 , \cf7 'Great hotel!'\cf2 , \cf7 '2023-11-05'\cf2 ),\
+    (\cf6 2\cf2 , \cf6 2\cf2 , \cf6 4\cf2 , \cf7 'Good experience overall.'\cf2 , \cf7 '2023-12-18'\cf2 ),\
+    (\cf6 3\cf2 , \cf6 3\cf2 , \cf6 3\cf2 , \cf7 'Could be better.'\cf2 , \cf7 '2024-01-30'\cf2 );\
+\
+\
+\cf4 CREATE TABLE \cf2 Invoice (\
+    \cf5 invoice_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 guest_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 room_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 service_id \cf4 INT\cf2 ,\
+    \cf5 invoice_date \cf4 DATE NOT NULL\cf2 ,\
+    \cf5 total_amount \cf4 DECIMAL\cf2 (\cf6 10\cf2 , \cf6 2\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf4 CONSTRAINT \cf2 check_amount_positive \cf4 CHECK \cf2 (\cf5 total_amount \cf2 >= \cf6 0\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 guest_id\cf2 ) \cf4 REFERENCES \cf2 Guest (\cf5 guest_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 room_id\cf2 ) \cf4 REFERENCES \cf2 Room (\cf5 room_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 service_id\cf2 ) \cf4 REFERENCES \cf2 Service (\cf5 service_id\cf2 )\
+);\
+\
+\cf4 CREATE INDEX \cf2 idx_invoice_date \cf4 ON \cf2 Invoice (\cf5 invoice_date\cf2 );\
+\
+\
+\cf4 CLUSTER \cf2 Invoice \cf4 USING \cf2 idx_invoice_date;\
+\
+\
+\cf4 INSERT INTO \cf2 Invoice (\cf5 guest_id\cf2 , \cf5 room_id\cf2 , \cf5 service_id\cf2 , \cf5 invoice_date\cf2 , \cf5 total_amount\cf2 ) \cf4 VALUES\
+    \cf2 (\cf6 1\cf2 , \cf6 1\cf2 , \cf6 1\cf2 , \cf7 '2023-11-06'\cf2 , \cf6 120.00\cf2 ),\
+    (\cf6 2\cf2 , \cf6 2\cf2 , \cf4 NULL\cf2 , \cf7 '2023-12-19'\cf2 , \cf6 200.00\cf2 ),\
+    (\cf6 3\cf2 , \cf6 3\cf2 , \cf6 2\cf2 , \cf7 '2024-01-31'\cf2 , \cf6 30.00\cf2 );\
+\
+\
+\cf4 SELECT \cf8 * \cf4 FROM \cf2 Review;\
+\cf4 SELECT \cf8 * \cf4 FROM \cf2 Invoice;\
+\
+\
+\cf4 CREATE TABLE \cf2 Payment (\
+    \cf5 payment_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 guest_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 invoice_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 payment_date \cf4 DATE NOT NULL\cf2 ,\
+    \cf5 amount \cf4 DECIMAL\cf2 (\cf6 10\cf2 , \cf6 2\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf4 CONSTRAINT \cf2 check_amount_positive \cf4 CHECK \cf2 (\cf5 amount \cf2 >= \cf6 0\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 guest_id\cf2 ) \cf4 REFERENCES \cf2 Guest (\cf5 guest_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 invoice_id\cf2 ) \cf4 REFERENCES \cf2 Invoice (\cf5 invoice_id\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_payment_date \cf4 ON \cf2 Payment (\cf5 payment_date\cf2 );\
+\
+\
+\cf4 CLUSTER \cf2 Payment \cf4 USING \cf2 idx_payment_date;\
+\
+\
+\cf4 INSERT INTO \cf2 Payment (\cf5 guest_id\cf2 , \cf5 invoice_id\cf2 , \cf5 payment_date\cf2 , \cf5 amount\cf2 ) \cf4 VALUES\
+    \cf2 (\cf6 1\cf2 , \cf6 1\cf2 , \cf7 '2023-11-06'\cf2 , \cf6 120.00\cf2 ),\
+    (\cf6 2\cf2 , \cf6 2\cf2 , \cf7 '2023-12-20'\cf2 , \cf6 200.00\cf2 ),\
+    (\cf6 3\cf2 , \cf6 3\cf2 , \cf7 '2024-02-01'\cf2 , \cf6 30.00\cf2 );\
+\
+\
+\cf4 CREATE TABLE \cf2 Product (\
+    \cf5 product_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 name \cf4 VARCHAR\cf2 (\cf6 100\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 description \cf4 TEXT\cf2 ,\
+    \cf5 price \cf4 DECIMAL\cf2 (\cf6 10\cf2 , \cf6 2\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf4 CONSTRAINT \cf2 unique_product_name \cf4 UNIQUE \cf2 (\cf5 name\cf2 ),\
+    \cf4 CONSTRAINT \cf2 check_price_positive \cf4 CHECK \cf2 (\cf5 price \cf2 >= \cf6 0\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_product_name \cf4 ON \cf2 Product (\cf5 name\cf2 );\
+\
+\
+\cf4 CLUSTER \cf2 Product \cf4 USING \cf2 idx_product_name;\
+\
+\
+\cf4 INSERT INTO \cf2 Product (\cf5 name\cf2 , \cf5 description\cf2 , \cf5 price\cf2 ) \cf4 VALUES\
+    \cf2 (\cf7 'Burger'\cf2 , \cf7 'Delicious beef burger'\cf2 , \cf6 10.00\cf2 ),\
+    (\cf7 'Pasta'\cf2 , \cf7 'Spaghetti with tomato sauce'\cf2 , \cf6 12.00\cf2 ),\
+    (\cf7 'Coffee'\cf2 , \cf7 'Freshly brewed coffee'\cf2 , \cf6 3.50\cf2 );\
+\
+\
+\cf4 SELECT \cf8 * \cf4 FROM \cf2 Payment;\
+\cf4 SELECT \cf8 * \cf4 FROM \cf2 Product;\
+\
+\
+\cf4 CREATE TABLE Event \cf2 (\
+    \cf5 event_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 event_name \cf4 VARCHAR\cf2 (\cf6 100\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 event_type \cf4 VARCHAR\cf2 (\cf6 50\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 event_date \cf4 DATE NOT NULL\cf2 ,\
+    \cf5 event_description \cf4 TEXT\cf2 ,\
+    \cf4 CONSTRAINT \cf2 valid_event_type \cf4 CHECK \cf2 (\cf5 event_type \cf4 IN \cf2 (\cf7 'Conference'\cf2 , \cf7 'Wedding'\cf2 , \cf7 'Meeting'\cf2 , \cf7 'Other'\cf2 )),\
+    \cf4 CONSTRAINT \cf2 unique_event_name \cf4 UNIQUE \cf2 (\cf5 event_name\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_event_date \cf4 ON Event \cf2 (\cf5 event_date\cf2 );\
+\
+\
+\cf4 CLUSTER Event USING \cf2 idx_event_date;\
+\
+\
+\cf4 INSERT INTO Event \cf2 (\cf5 event_name\cf2 , \cf5 event_type\cf2 , \cf5 event_date\cf2 , \cf5 event_description\cf2 ) \cf4 VALUES\
+    \cf2 (\cf7 'Tech Conference'\cf2 , \cf7 'Conference'\cf2 , \cf7 '2023-11-15'\cf2 , \cf7 'Annual technology conference'\cf2 ),\
+    (\cf7 'Wedding Celebration'\cf2 , \cf7 'Wedding'\cf2 , \cf7 '2023-12-25'\cf2 , \cf7 'John and Mary wedding'\cf2 ),\
+    (\cf7 'Business Meeting'\cf2 , \cf7 'Meeting'\cf2 , \cf7 '2023-01-10'\cf2 , \cf7 'Quarterly corporate meeting'\cf2 );\
+\
+\
+\cf4 CREATE TABLE \cf2 Partners (\
+    \cf5 partner_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 partner_name \cf4 VARCHAR\cf2 (\cf6 100\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 partner_type \cf4 VARCHAR\cf2 (\cf6 50\cf2 ) \cf4 NOT NULL\cf2 ,\
+    \cf5 partner_description \cf4 TEXT\cf2 ,\
+    \cf4 CONSTRAINT \cf2 valid_partner_type \cf4 CHECK \cf2 (\cf5 partner_type \cf4 IN \cf2 (\cf7 'Travel Agency'\cf2 , \cf7 'Transport Company'\cf2 , \cf7 'Other'\cf2 )),\
+    \cf4 CONSTRAINT \cf2 unique_partner_name \cf4 UNIQUE \cf2 (\cf5 partner_name\cf2 )\
+);\
+\
+\
+\cf4 CREATE INDEX \cf2 idx_partner_name \cf4 ON \cf2 Partners (\cf5 partner_name\cf2 );\
+\
+\cf4 CLUSTER \cf2 Partners \cf4 USING \cf2 idx_partner_name;\
+\
+\cf4 INSERT INTO \cf2 Partners (\cf5 partner_name\cf2 , \cf5 partner_type\cf2 , \cf5 partner_description\cf2 ) \cf4 VALUES\
+    \cf2 (\cf7 'Travel World'\cf2 , \cf7 'Travel Agency'\cf2 , \cf7 'Offering tour packages'\cf2 ),\
+    (\cf7 'City Transport'\cf2 , \cf7 'Transport Company'\cf2 , \cf7 'Providing airport shuttle services'\cf2 ),\
+    (\cf7 'EventPlanner Inc.'\cf2 , \cf7 'Other'\cf2 , \cf7 'Event planning services'\cf2 );\
+\
+\cf4 CREATE TABLE \cf2 StayHistory (\
+    \cf5 stay_id \cf4 SERIAL PRIMARY KEY\cf2 ,\
+    \cf5 guest_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 checkin_date \cf4 DATE NOT NULL\cf2 ,\
+    \cf5 checkout_date \cf4 DATE NOT NULL\cf2 ,\
+    \cf5 total_nights \cf4 INT NOT NULL\cf2 ,\
+    \cf4 CONSTRAINT \cf2 valid_stay_dates \cf4 CHECK \cf2 (\cf5 checkout_date \cf2 >= \cf5 checkin_date\cf2 ),\
+    \cf4 CONSTRAINT \cf2 valid_total_nights \cf4 CHECK \cf2 (\cf5 total_nights \cf2 > \cf6 0\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 guest_id\cf2 ) \cf4 REFERENCES \cf2 Guest (\cf5 guest_id\cf2 )\
+);\
+\
+\cf4 CREATE INDEX \cf2 idx_checkin_date \cf4 ON \cf2 StayHistory (\cf5 checkin_date\cf2 );\
+\
+\cf4 CLUSTER \cf2 StayHistory \cf4 USING \cf2 idx_checkin_date;\
+\
+\cf4 INSERT INTO \cf2 StayHistory (\cf5 guest_id\cf2 , \cf5 checkin_date\cf2 , \cf5 checkout_date\cf2 , \cf5 total_nights\cf2 ) \cf4 VALUES\
+    \cf2 (\cf6 1\cf2 , \cf7 '2023-11-01'\cf2 , \cf7 '2023-11-05'\cf2 , \cf6 4\cf2 ),\
+    (\cf6 2\cf2 , \cf7 '2023-12-10'\cf2 , \cf7 '2023-12-15'\cf2 , \cf6 5\cf2 ),\
+    (\cf6 3\cf2 , \cf7 '2024-01-20'\cf2 , \cf7 '2024-01-24'\cf2 , \cf6 4\cf2 );\
+\
+\cf4 CREATE TABLE \cf2 EventHotel (\
+    \cf5 event_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 hotel_id \cf4 INT NOT NULL\cf2 ,\
+    \cf4 PRIMARY KEY \cf2 (\cf5 event_id\cf2 , \cf5 hotel_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 event_id\cf2 ) \cf4 REFERENCES Event \cf2 (\cf5 event_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 hotel_id\cf2 ) \cf4 REFERENCES \cf2 Hotel (\cf5 hotel_id\cf2 )\
+);\
+\
+\cf4 CREATE TABLE \cf2 StaffDep (\
+    \cf5 staff_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 hotel_id \cf4 INT NOT NULL\cf2 ,\
+    \cf5 department_id \cf4 INT NOT NULL\cf2 ,\
+    \cf4 PRIMARY KEY \cf2 (\cf5 staff_id\cf2 , \cf5 department_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 staff_id\cf2 ) \cf4 REFERENCES \cf2 Staff (\cf5 staff_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 hotel_id\cf2 ) \cf4 REFERENCES \cf2 Hotel (\cf5 hotel_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 department_id\cf2 ) \cf4 REFERENCES \cf2 Department (\cf5 department_id\cf2 )\
+);\
+\
+\cf4 CREATE TABLE \cf2 prodRep\
+(\
+    \cf5 product_id      \cf4 INT NOT NULL\cf2 ,\
+    \cf5 partners_id      \cf4 INT NOT NULL\cf2 ,\
+    \cf5 bill_id \cf4 INT NOT NULL\cf2 ,\
+    \cf4 PRIMARY KEY \cf2 (\cf5 product_id\cf2 , \cf5 partners_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 bill_id\cf2 ) \cf4 REFERENCES \cf2 Payment (\cf5 payment_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 product_id\cf2 ) \cf4 REFERENCES \cf2 Product (\cf5 product_id\cf2 ),\
+    \cf4 FOREIGN KEY \cf2 (\cf5 partners_id\cf2 ) \cf4 REFERENCES \cf2 Partners (\cf5 partner_id\cf2 )\
+);\
+\
+\cf4 INSERT INTO \cf2 EventHotel (\cf5 event_id\cf2 , \cf5 hotel_id\cf2 ) \cf4 VALUES \cf2 (\cf6 1\cf2 , \cf6 1\cf2 );\
+\
+\
+\cf4 SELECT \cf8 * \cf4 FROM Event\cf2 ;\
+\cf4 SELECT \cf8 * \cf4 FROM \cf2 Partners;\
+\cf4 SELECT \cf8 * \cf4 FROM \cf2 StayHistory;\
+\
+\cf4 DROP FUNCTION 
+\f3\i \cf9 book_room
+\f1\i0 \cf2 (guest_id_in \cf4 INT\cf2 ,\
+    room_type_in \cf4 VARCHAR\cf2 (\cf6 255\cf2 ),\
+    status_in \cf4 VARCHAR\cf2 (\cf6 20\cf2 ),\
+    check_in_date \cf4 DATE\cf2 ,\
+    check_out_date \cf4 DATE\cf2 );\
+\
+\cf4 CREATE OR REPLACE FUNCTION 
+\f3\i \cf9 book_room
+\f1\i0 \cf2 (\
+    guest_id_in \cf4 INT\cf2 ,\
+    room_type_in \cf4 VARCHAR\cf2 (\cf6 255\cf2 ),\
+    status_in \cf4 VARCHAR\cf2 (\cf6 20\cf2 ),\
+    check_in_date_in \cf4 DATE\cf2 ,\
+    check_out_date_in \cf4 DATE\
+\cf2 ) \cf4 RETURNS INT AS \cf7 $$\
+\cf4 DECLARE\
+    \cf2 room_id_in \cf4 INT\cf2 ;\
+\cf4 BEGIN\
+    \cf10 -- Get available rooms of the specified type for the given date range\
+    \cf4 WITH \cf2 available_rooms \cf4 AS \cf2 (\
+        \cf4 SELECT \cf2 R.\cf5 room_id\
+        \cf4 FROM \cf2 Room R\
+        \cf4 WHERE \cf2 R.\cf5 room_type \cf2 = room_type_in\
+          \cf4 AND NOT 
+\f3\i \cf9 EXISTS 
+\f1\i0 \cf2 (\
+            \cf4 SELECT \cf6 1\
+            \cf4 FROM \cf2 Reservation R2\
+            \cf4 WHERE \cf2 R2.\cf5 room_id \cf2 = R.\cf11 room_id\
+            \cf4 AND \cf2 (R2.\cf5 check_in_date\cf2 , R2.\cf5 check_out_date\cf2 ) \cf4 OVERLAPS \cf2 (check_in_date_in, check_out_date_in)\
+        )\
+    )\
+\
+    \cf10 -- Select one available room (you can add ORDER BY if needed)\
+    \cf4 SELECT \cf5 room_id \cf4 INTO \cf2 room_id_in\
+    \cf4 FROM \cf2 available_rooms\
+    \cf4 LIMIT \cf6 1\cf2 ;\
+\
+    \cf4 IF \cf2 room_id_in \cf4 IS NOT NULL THEN\
+        INSERT INTO \cf2 Reservation (\cf5 guest_id\cf2 , \cf5 room_id\cf2 , \cf5 check_in_date\cf2 , \cf5 check_out_date\cf2 , \cf5 status\cf2 )\
+        \cf4 VALUES \cf2 (guest_id_in, room_id_in, check_in_date_in, check_out_date_in, status_in);\
+    \cf4 END IF\cf2 ;\
+\
+    \cf4 RETURN \cf2 room_id_in;\
+\cf4 END\cf2 ;\
+\cf7 $$ \cf4 LANGUAGE \cf2 plpgsql;\
+\
+\
+\cf4 SELECT 
+\f3\i \cf9 book_room
+\f1\i0 \cf2 (\
+    \cf6 2\cf2 ,\
+    \cf7 '
+\f2 \uc0\u1051 \u1102 \u1082 \u1089 
+\f1 '\cf2 ,\
+    \cf7 '
+\f2 \uc0\u1047 \u1072 \u1073 \u1088 \u1086 \u1085 \u1080 \u1088 \u1086 \u1074 \u1072 \u1085 \u1086 
+\f1 '\cf2 ,\
+    \cf7 '\cb12 2024-11-01\cb3 '\cf2 ::\cf4 DATE\cf2 ,\
+    \cf7 '\cb12 2024-11-05\cb3 '\cf2 ::\cf4 DATE\
+\cf2 );\
+\
+\cf4 select \cf8 * \cf4 from \cf2 Reservation;\
+\cf4 select \cf8 * \cf4 from \cf2 room;\
+\
+\cf4 CREATE OR REPLACE FUNCTION 
+\f3\i \cf9 add_review
+\f1\i0 \cf2 (\
+    in_guest_id \cf4 INT\cf2 ,\
+    in_hotel_id \cf4 INT\cf2 ,\
+    in_rating \cf4 INT\cf2 ,\
+    in_comment \cf4 TEXT\cf2 ,\
+    in_review_date \cf4 DATE\
+\cf2 ) \cf4 RETURNS VOID AS \cf7 $$\
+\cf4 BEGIN\
+    IF NOT 
+\f3\i \cf9 EXISTS 
+\f1\i0 \cf2 (\cf4 SELECT \cf6 1 \cf4 FROM \cf2 Guest \cf4 WHERE \cf5 guest_id \cf2 = in_guest_id) \cf4 THEN\
+        RAISE EXCEPTION \cf7 'Guest not found'\cf2 ;\
+    \cf4 END IF\cf2 ;\
+\
+    \cf4 IF NOT 
+\f3\i \cf9 EXISTS 
+\f1\i0 \cf2 (\cf4 SELECT \cf6 1 \cf4 FROM \cf2 Hotel \cf4 WHERE \cf5 hotel_id \cf2 = in_hotel_id) \cf4 THEN\
+        RAISE EXCEPTION \cf7 'Hotel not found'\cf2 ;\
+    \cf4 END IF\cf2 ;\
+\
+    \cf4 INSERT INTO \cf2 Review (\cf5 guest_id\cf2 , \cf5 hotel_id\cf2 , \cf5 rating\cf2 , \cf5 comment\cf2 , \cf5 review_date\cf2 )\
+    \cf4 VALUES \cf2 (in_guest_id, in_hotel_id, in_rating, in_comment, in_review_date);\
+\
+    \cf4 UPDATE \cf2 Hotel\
+    \cf4 SET \cf5 star_rating \cf2 = (\cf4 SELECT 
+\f3\i \cf9 AVG
+\f1\i0 \cf2 (\cf5 rating\cf2 ) \cf4 FROM \cf2 Review \cf4 WHERE \cf5 hotel_id \cf2 = in_hotel_id)\
+    \cf4 WHERE \cf5 hotel_id \cf2 = in_hotel_id;\
+\
+    \cf4 RETURN\cf2 ;\
+\cf4 END\cf2 ;\
+\cf7 $$ \cf4 LANGUAGE \cf2 plpgsql;\
+\
+\cf4 SELECT 
+\f3\i \cf9 add_review
+\f1\i0 \cf2 (\cf6 1\cf2 , \cf6 2\cf2 , \cf6 4\cf2 , \cf7 'Good place!'\cf2 , \cf7 '2023-10-27'\cf2 );\
+\cf4 select  \cf8 * \cf4 from \cf2 review;\
+\
+\cf4 CREATE OR REPLACE FUNCTION 
+\f3\i \cf9 cancel_reservation
+\f1\i0 \cf2 (reservation_id_in \cf4 INT\cf2 ) \cf4 RETURNS VOID AS \cf7 $$\
+\cf4 BEGIN\
+    DELETE FROM \cf2 Reservation \cf4 WHERE \cf5 reservation_id \cf2 = reservation_id_in;\
+\cf4 END\cf2 ;\
+\cf7 $$ \cf4 LANGUAGE \cf2 plpgsql;\
+\
+\cf4 CREATE OR REPLACE FUNCTION 
+\f3\i \cf9 check_in_guest
+\f1\i0 \cf2 (reservation_id_in \cf4 INT\cf2 , check_out_date_in \cf4 DATE\cf2 ) \cf4 RETURNS VOID AS \cf7 $$\
+\cf4 DECLARE\
+    \cf2 guest_id_in \cf4 INT\cf2 ;\
+\cf4 BEGIN\
+    SELECT \cf5 guest_id \cf4 INTO \cf2 guest_id_in\
+    \cf4 FROM \cf2 Reservation\
+    \cf4 WHERE \cf5 reservation_id \cf2 = reservation_id_in;\
+\
+    \cf4 UPDATE \cf2 Reservation\
+    \cf4 SET \cf5 status \cf2 = \cf7 '
+\f2 \uc0\u1047 \u1072 \u1089 \u1077 \u1083 \u1077 \u1085 \u1086 
+\f1 '\
+    \cf4 WHERE \cf5 reservation_id \cf2 = reservation_id_in;\
+\
+    \cf4 INSERT INTO \cf2 StayHistory (\cf5 guest_id\cf2 , \cf5 checkin_date\cf2 , \cf5 checkout_date\cf2 ,\cf5 total_nights\cf2 )\
+    \cf4 VALUES \cf2 (guest_id_in, 
+\f3\i \cf9 NOW
+\f1\i0 \cf2 (), check_out_date_in,
+\f3\i \cf9 EXTRACT
+\f1\i0 \cf2 (\cf4 EPOCH FROM \cf2 (check_out_date_in - 
+\f3\i \cf9 now
+\f1\i0 \cf2 ())) / \cf6 86400\cf2 );\
+\cf4 END\cf2 ;\
+\cf7 $$ \cf4 LANGUAGE \cf2 plpgsql;\
+\
+\cf4 SELECT 
+\f3\i \cf9 check_in_guest
+\f1\i0 \cf2 (\cf6 3\cf2 , \cf7 '2023-10-30'\cf2 );\
+\
+\
+}
